@@ -86,7 +86,7 @@ $ source install/setup.bash
 $ ros2 launch rplidar_ros view_rplidar.launch.py
 
 2번 터미널 - 라이다 pub node
-$ cd ros2_4leg_robot
+$ cd ros2_4leg_robot/src
 $ python3 ros2_robot_ridar.py
 
 3번 터미널 - aruco_tag 
