@@ -12,7 +12,7 @@
 ### 1. 노드 정리
 ![Image](https://github.com/user-attachments/assets/dc8e1e8d-d530-452b-b5ec-ad2643d34285)
 ![Image](https://github.com/user-attachments/assets/0386969d-4bd5-4cd6-8fb1-6ef1d616c365)
-
+![Image](https://github.com/user-attachments/assets/a75d6add-7222-405e-8386-bf904fbd2771)
 
 
 ### 2. 미완성인 부분
