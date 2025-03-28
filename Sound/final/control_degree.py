@@ -76,27 +76,30 @@ class send2image(Node):
 
 def ControlDegree():
     rclpy.init(args=None)
-    node = TestMoveBlindNoService()
+    rotation_node = TestMoveBlindNoService()
+    rotation_node.Initialize()
+
     send_image_node = send2image()
-    node.Initialize()
+    
     while True:
         degree = Audio()
         if degree :
             if  0 < degree < 180 :
                 step = degree // 30 * 100 
-                node.TurnLeft(step)
+                rotation_node.TurnLeft(step)
 
             elif degree < 360 :
                 step = (360 - degree) // 30 * 100
-                node.TurnRight(step)
+                rotation_node.TurnRight(step)
             print("audio")                
             send_image_node.send2image_pub.publish(UInt32(data=1))
+            rotation_node.destroy_node()
+            send_image_node.destroy_node()
+
             return 1
+            
         else :
             print("error")
-
-    node.destroy_node()
-    rclpy.shutdown()
 
 
 if __name__ == '__main__' :
