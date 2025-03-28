@@ -75,10 +75,10 @@ class TestMoveBlindNoService(Node):
         self.pub_twist.publish(Twist()) # zero twist
 
     def Endmode(self):
-        node.pub_action.publish(UInt32(data=0)) # sit
+        self.pub_action.publish(UInt32(data=0)) # sit
         time.sleep(5)
-        node.get_logger().info("Setting control mode=180")
-        node.pub_control_mode.publish(UInt32(data=180))
+        self.get_logger().info("Setting control mode=180")
+        self.pub_control_mode.publish(UInt32(data=180))
 
 
 class MinimalSubscriber(Node):
@@ -139,8 +139,6 @@ class LidarScan(Node):
     def __init__(self):
         super().__init__('sub_lidar')
         self.subscription = self.create_subscription(Odometry,  '/odom',  self.Odom,  10)
-        self.singnal_subscription = self.create_subscription(UInt32,  '/signal',  self.start,  10)
-
 
         self.sub_order = self.create_subscription(LaserScan, '/filtered_scan', self.Lidar, 10)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -149,7 +147,6 @@ class LidarScan(Node):
         self.model.eval()
         self.Odom_msg = np.array([0,0,0])
         self.while_start = 0
-
         self.output = 0
 
     def Lidar(self, msg):
@@ -162,57 +159,62 @@ class LidarScan(Node):
         self.output, _ = self.model(torch.FloatTensor(state).to(self.device))
         self.action = torch.multinomial(self.output,1).cpu().numpy()[0]
 
-        # print(self.action)
-
-
-        # print(state) 
-        # print(len(state))
-        # print("\n")
-
     def Odom(self, msg):
 
         position = [msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z]
         self.Odom_msg = np.array(position)
         print(self.Odom_msg)
 
+
+class Signal_check(Node):
+    def __init__(self):
+        super().__init__('sub_lidar')
+        self.singnal_subscription = self.create_subscription(UInt32,  '/signal',  self.start,  10)
+        self.while_start = 0
+
     def start(self, msg):
         self.while_start = msg.data
 
 def Control():
     # rclpy.init(args=None)
-    node = TestMoveBlindNoService()
-    minimal_subscriber = MinimalSubscriber()
-    lidar = LidarScan()
-
-    node.Initialize()
     
-    lidar.action = 0
-    
+    signal = Signal_check()
     while True:
-        rclpy.spin_once(lidar)
-        if lidar.while_start == 2:
+        rclpy.spin_once(signal)
+        time.sleep(0.1)  # ✅ CPU 사용량 줄이기 위해 딜레이 추가 (0.1초)
+        if signal.while_start == 2:
             break
 
+    signal.destroy_node()
+
+    node = TestMoveBlindNoService()
+    node.Initialize()
+
+    minimal_subscriber = MinimalSubscriber()
+
+    lidar = LidarScan()
+    lidar.action = 0
+
     while True:
         rclpy.spin_once(lidar)
+        # if lidar.action == 1:
+        #     node.Forward()
+        #     rclpy.spin_once(minimal_subscriber)
+        #     print("forward")
+        # elif lidar.action == 2:
+        #     node.Backward()
+        #     rclpy.spin_once(minimal_subscriber)
+        #     print("backward")
         if lidar.action == 1:
-            node.Forward()
-            rclpy.spin_once(minimal_subscriber)
-            print("forward")
-        elif lidar.action == 2:
-            node.Backward()
-            rclpy.spin_once(minimal_subscriber)
-            print("backward")
-        elif lidar.action == 3:
             node.RightSide()
             rclpy.spin_once(minimal_subscriber)
             print("right")
-        elif lidar.action == 4:
+        elif lidar.action == 2:
             node.LeftSide()
             rclpy.spin_once(minimal_subscriber)
             print("left")
         
-        elif lidar.action == 5:
+        elif lidar.action == 0:
             node.Endmode()
             break
 
