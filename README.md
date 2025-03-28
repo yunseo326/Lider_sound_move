@@ -10,13 +10,8 @@
 ```
 
 ### 1. 노드 정리
-진행 상황
-![Image](https://github.com/user-attachments/assets/12fafb0b-fa62-4a53-b9d9-195f3fb535ec)
-
-
-
-목표
-![Image](https://github.com/user-attachments/assets/df0d05a1-aa08-42cd-91e5-5a46bc181e3c)
+![Image](https://github.com/user-attachments/assets/dc8e1e8d-d530-452b-b5ec-ad2643d34285)
+![Image](https://github.com/user-attachments/assets/0386969d-4bd5-4cd6-8fb1-6ef1d616c365)
 
 
 
