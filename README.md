@@ -47,25 +47,29 @@ aruco_tag 인식해서 움직임으로   : quad25_ws-main/src/tag_follow/fake_ro
 
 ### 4. 빌드 방법
 ```
-라이다 
+한번에 전부 실행하는 방법
+$source build.bash
+
+각 센서별로 실행하는 방법
+1. 라이다 
 $ unzip ros2_4leg_robot.zip
 $ cd ros2_4leg_robot
 $ colcon build
 $ source install/setup.bash
 
-aruco_tag 파일
+2. aruco_tag 파일
 $ cd quad25_ws-main
 $ colcon build
 $ source install/local_setup.bash
 
-오디오 - 사전 requirement 설치해야합니다 위치 : Sound/requirement.txt
+3. 오디오 - 사전 requirement 설치해야합니다 위치 : Sound/requirement.txt
 $ cd Sound
 $ mkdir build
 $ cd build
 $ cmake ..
 $ make
 
-main_control 코드
+4. main_control 코드
 $ cd robot
 $ colcon build --symlink-install --packages-select my_test_pkg_py
 $ source install/setup.bash
@@ -77,9 +81,10 @@ cyclonedds 연결방법
 
 ### 5. 실행 방법
 ```
-만약 setup.py 혹은 cmakelist를 수정하였다면 빌드 과정 다시 진행
-실행코드만 수정하였다면 source install/setup.bash 만 수행
+한번에 실행하는 방법
+$source execution.bash
 
+각각 실행하는 방법
 1번 터미널 - 라이다 rviz
 $ cd ros2_4leg_robot 
 $ source install/setup.bash
