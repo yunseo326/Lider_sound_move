@@ -199,11 +199,10 @@ int main(){
                 AudioResult result = getAudioAngle(vecinput1, vecinput2, vecinput3, vecinput4);
 
                 std::pair<double, double> best_pair = _select_final_direction({result.angle_1, result.angle_2, result.angle_3, result.angle_4});
-                cout << "최종 방향: " << 30 << " 도" << endl;
-                // cout << "최종 방향: " << (best_pair.first + best_pair.second)/2 << " 도" << endl;
+                //cout << "최종 방향: " << 30 << " 도" << endl;
+                cout << "최종 방향: " << (best_pair.first + best_pair.second)/2 << " 도" << endl;
                 cout << endl;
-                // return (best_pair.first + best_pair.second
-                return 30;
+                return (best_pair.first + best_pair.second);
         }
         
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
